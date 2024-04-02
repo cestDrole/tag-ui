@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { DataGrid } from '@mui/x-data-grid';
+import { CircularProgress } from '@mui/material';
 
 const GridData = () => {
   const columns = [
-    { field: 'id', headerName: 'ID', width: 90 },
-    { field: 'name', headerName: 'NAME', width: 150 },
-    { field: 'count', headerName: 'COUNT', width: 120 },
+    { field: 'id', headerName: 'ID', flex: 1 },
+    { field: 'name', headerName: 'NAME', flex: 2 },
+    { field: 'count', headerName: 'COUNT', flex: 1 },
   ];
 
   const {
@@ -22,18 +23,18 @@ const GridData = () => {
 
   // Show a loading message while data is fetching
   if (isLoading) {
-    return <h2>Loading...</h2>;
+    return <CircularProgress color="inherit" />;
   }
 
   // to handle error
   if (error) {
-    return <div className='error'>Error: error fetching</div>;
+    return <div className="error">Error: error fetching</div>;
   }
 
   const tags = response?.items;
 
   return (
-    <div style={{ height: 800, width: '30%' }}>
+    <div style={{ width: 'auto' }}>
       <DataGrid
         columns={columns}
         rows={tags.map((tag, index) => ({
@@ -41,11 +42,16 @@ const GridData = () => {
           name: tag.name,
           count: tag.count,
         }))}
-        pageSize={10}
         checkboxSelection
-        showPagination={true}
-        pageSizeOptions={[5, 10, 25]}
-        autoPageSize
+        autoHeight
+        pageSizeOptions={[10, 25, 50, 100]}
+        // hideFooterPagination
+        // hideFooter
+        initialState={{
+          pagination: {
+            paginationModel: { pageSize: 10, page: 0 },
+          },
+        }}
       />
     </div>
   );
