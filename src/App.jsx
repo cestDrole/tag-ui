@@ -8,15 +8,17 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Container maxWidth="sm">
-        <Typography>Hello</Typography>
-        <Box display="flex" justifyContent="end" alignItems="center">
+      <Container maxWidth='sm'>
+        <Typography variant='h5'>
+          Zadanie rekrutacyjne - Sebastian Jasnosz
+        </Typography>
+        <Box display='flex' justifyContent='end' alignItems='center'>
           <PageSizeInput />
         </Box>
         <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
           minHeight={'80vh'}
         >
           <GridData />

@@ -20,7 +20,8 @@
     "@mui/x-data-grid": "^7.1.0",
     "@tanstack/react-query": "^5.28.9",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.2.25",

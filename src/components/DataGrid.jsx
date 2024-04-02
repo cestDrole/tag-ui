@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { DataGrid } from '@mui/x-data-grid';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Alert } from '@mui/material';
 
 const GridData = () => {
   const columns = [
@@ -21,20 +21,18 @@ const GridData = () => {
     queryKey: ['tags'],
   });
 
-  // Show a loading message while data is fetching
   if (isLoading) {
-    return <CircularProgress color="inherit" />;
+    return <CircularProgress color='inherit' />;
   }
 
-  // to handle error
   if (error) {
-    return <div className="error">Error: error fetching</div>;
+    return <Alert severity='error'>Error: error fetching data</Alert>;
   }
 
   const tags = response?.items;
 
   return (
-    <div style={{ width: 'auto' }}>
+    <div style={{ width: '100%' }}>
       <DataGrid
         columns={columns}
         rows={tags.map((tag, index) => ({

@@ -1,24 +1,25 @@
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
+import { usePageSizeStore } from '../store';
 
 export default function PageSizeInput() {
   const minValue = 1;
   const maxValue = 100;
-  const [value, setValue] = useState('');
+  const pageSize = usePageSizeStore((state) => state.pageSize);
+  const setPageSize = usePageSizeStore((state) => state.setPageSize);
 
   const handleInput = (e) => {
     const newValue =
       e.target.value === ''
         ? ''
         : Math.min(Math.max(e.target.value, minValue), maxValue);
-    setValue(newValue);
+    setPageSize(newValue);
   };
 
   return (
     <TextField
-      type="number"
+      type='number'
       onChange={handleInput}
-      value={value}
+      value={pageSize}
       InputLabelProps={{
         shrink: true,
       }}
@@ -28,11 +29,11 @@ export default function PageSizeInput() {
           max: maxValue,
         },
       }}
-      placeholder="1-100"
-      variant="standard"
-      size="small"
-      id="standard-number"
-      label="Page Size"
+      placeholder='1-100'
+      variant='standard'
+      size='small'
+      id='standard-number'
+      label='Page Size'
     />
   );
 }
