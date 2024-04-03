@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { CircularProgress, Alert } from '@mui/material';
 import { usePageSizeStore } from '../store';
 
-const GridData = () => {
+const GridData = ({ queryFn }) => {
   const pageSize = usePageSizeStore((state) => state.pageSize);
   const setPageSize = usePageSizeStore((state) => state.setPageSize);
   const page = usePageSizeStore((state) => state.page);
@@ -20,19 +20,21 @@ const GridData = () => {
     isLoading,
     error,
   } = useQuery({
-    queryFn: () =>
-      fetch(
-        'https://api.stackexchange.com/tags?pagesize=100&order=desc&sort=popular&site=stackoverflow'
-      ).then((res) => res.json()),
+    queryFn:
+      queryFn ||
+      (() =>
+        fetch(
+          'https://api.stackexchange.com/tags?pagesize=100&order=desc&sort=popular&site=stackoverflow'
+        ).then((res) => res.json())),
     queryKey: ['tags'],
   });
 
   if (isLoading) {
-    return <CircularProgress color="inherit" />;
+    return <CircularProgress color='inherit' />;
   }
 
   if (error) {
-    return <Alert severity="error">Error: error fetching data</Alert>;
+    return <Alert severity='error'>Error: error fetching data</Alert>;
   }
 
   const tags = response?.items;

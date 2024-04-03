@@ -8,24 +8,19 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Container maxWidth="md">
-        <Typography variant="h5" sx={{ mt: 4 }}>
+      <Container maxWidth='md'>
+        <Typography variant='h5' sx={{ mt: 4 }}>
           Zadanie rekrutacyjne - Sebastian Jasnosz
         </Typography>
         <Box
-          display="flex"
-          justifyContent="end"
-          alignItems="center"
-          sx={{ mt: 2, mb: 2 }}
+          display='flex'
+          justifyContent='end'
+          alignItems='center'
+          sx={{ my: 2 }}
         >
           <PageSizeInput />
         </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="top"
-          // minHeight={'80vh'}
-        >
+        <Box display='flex' justifyContent='center' alignItems='top'>
           <GridData />
         </Box>
       </Container>

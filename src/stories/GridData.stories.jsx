@@ -1,56 +1,66 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import GridData from '../components/DataGrid';
-
-const queryClient = new QueryClient();
+import { rest } from 'msw';
 
 export default {
-  title: 'GridData',
+  id: 'GridData',
   component: GridData,
-  decorators: [
-    (Story) => (
-      <QueryClientProvider client={queryClient}>
-        <Story />
-      </QueryClientProvider>
-    ),
-  ],
 };
 
-const Template = (args) => <GridData {...args} />;
+const defaultQueryClient = new QueryClient();
 
-export const Default = Template.bind({});
-Default.args = {};
-Default.parameters = {
-  queryClient: {
-    queryKey: ['tags'],
-    isLoading: false,
-    isError: false,
+export const Success = () => (
+  <QueryClientProvider client={defaultQueryClient}>
+    <GridData />
+  </QueryClientProvider>
+);
+
+const MockTemplate = (queryFn) => {
+  const mockedQueryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
+
+  return (
+    <QueryClientProvider client={mockedQueryClient}>
+      <GridData queryFn={queryFn} />
+    </QueryClientProvider>
+  );
+};
+
+export const Loading = {
+  render: () => MockTemplate(() => new Promise(() => {})),
+  parameters: {
+    msw: {
+      handlers: [
+        rest.get(
+          'https://api.stackexchange.com/tags?pagesize=100&order=desc&sort=popular&site=stackoverflow',
+          (req, res, ctx) => {
+            return res(ctx.delay('infinite'));
+          }
+        ),
+      ],
+    },
   },
 };
 
-export const Loading = Template.bind({});
-Loading.args = {};
-Loading.parameters = {
-  queryClient: {
-    queries: [
-      {
-        queryKey: ['tags'],
-        isLoading: true,
-        isError: false,
-      },
-    ],
-  },
-};
+export const Error = {
+  render: () =>
+    MockTemplate(() => Promise.reject(new Error('error fetching data'))),
 
-export const Error = Template.bind({});
-Error.args = {};
-Error.parameters = {
-  queryClient: {
-    queries: [
-      {
-        queryKey: ['tags'],
-        isError: true,
-        isLoading: false,
-      },
-    ],
+  parameters: {
+    msw: {
+      handlers: [
+        rest.get(
+          'https://api.stackexchange.com/tags?pagesize=100&order=desc&sort=popular&site=stackoverflow',
+          (req, res, ctx) => {
+            return res(ctx.delay(0), ctx.status(403));
+          }
+        ),
+      ],
+    },
   },
 };

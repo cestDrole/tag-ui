@@ -1,7 +1,7 @@
 import PageSizeInput from '../components/PageSizeInput';
 
 export default {
-  title: 'PageSizeInput',
+  id: 'PageSizeInput',
   component: PageSizeInput,
 };
 

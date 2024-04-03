@@ -17,7 +17,7 @@ export default function PageSizeInput() {
 
   return (
     <TextField
-      type="number"
+      type='number'
       onChange={handleInput}
       value={pageSize}
       InputLabelProps={{
@@ -29,11 +29,11 @@ export default function PageSizeInput() {
           max: maxValue,
         },
       }}
-      placeholder="1-100"
-      variant="standard"
-      size="small"
-      id="standard-number"
-      label="Page Size"
+      placeholder='1-100'
+      variant='standard'
+      size='small'
+      id='standard-number'
+      label='Page Size'
     />
   );
 }
