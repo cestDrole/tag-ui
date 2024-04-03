@@ -1,8 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { DataGrid } from '@mui/x-data-grid';
 import { CircularProgress, Alert } from '@mui/material';
+import { usePageSizeStore } from '../store';
 
 const GridData = () => {
+  const pageSize = usePageSizeStore((state) => state.pageSize);
+  const setPageSize = usePageSizeStore((state) => state.setPageSize);
+  const page = usePageSizeStore((state) => state.page);
+  const setPage = usePageSizeStore((state) => state.setPage);
+
   const columns = [
     { field: 'id', headerName: 'ID', flex: 1 },
     { field: 'name', headerName: 'NAME', flex: 2 },
@@ -22,11 +28,11 @@ const GridData = () => {
   });
 
   if (isLoading) {
-    return <CircularProgress color='inherit' />;
+    return <CircularProgress color="inherit" />;
   }
 
   if (error) {
-    return <Alert severity='error'>Error: error fetching data</Alert>;
+    return <Alert severity="error">Error: error fetching data</Alert>;
   }
 
   const tags = response?.items;
@@ -42,13 +48,9 @@ const GridData = () => {
         }))}
         checkboxSelection
         autoHeight
-        pageSizeOptions={[10, 25, 50, 100]}
-        // hideFooterPagination
-        // hideFooter
-        initialState={{
-          pagination: {
-            paginationModel: { pageSize: 10, page: 0 },
-          },
+        paginationModel={{ pageSize: pageSize || 10, page: page }}
+        onPaginationModelChange={(model) => {
+          setPageSize(model.pageSize), setPage(model.page);
         }}
       />
     </div>
